@@ -45,7 +45,6 @@
 #include <libethash-cl/ethash_cl_miner.h>
 #endif
 #if ETH_JSONRPC || !ETH_TRUE
-#include <jsonrpccpp/server/connectors/httpserver.h>
 #include <jsonrpccpp/client/connectors/httpclient.h>
 #endif
 #include "BuildInfo.h"
