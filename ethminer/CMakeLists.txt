@@ -6,8 +6,6 @@ file(GLOB HEADERS "*.h")
 
 add_executable(${EXECUTABLE} ${SRC_LIST} ${HEADERS})
 
-add_dependencies(${EXECUTABLE} BuildInfo.h)
-
 eth_use(${EXECUTABLE} REQUIRED JsonRpc::Client Dev::devcore Eth::ethcore)
 
 jsonrcpstub_client_create(minerfarm.json FarmClient FarmClient)
