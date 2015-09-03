@@ -18,6 +18,10 @@ include(EthDependencies)
 
 include(EthUtils)
 
+include(EthOptions)
+configure_project()
+print_config()
+
 # core libraries
 add_subdirectory(libethash)
 add_subdirectory(libethash-cl)
@@ -33,13 +37,18 @@ add_subdirectory(libnatspec)
 add_subdirectory(libtestutils)
 
 # executables
-add_subdirectory(ethkey)
-add_subdirectory(ethminer)
-add_subdirectory(ethvm)
-add_subdirectory(lllc)
 
-# test
-#add_subdirectory(test)
+if (TOOLS)
+	add_subdirectory(ethkey)
+	add_subdirectory(ethminer)
+	add_subdirectory(ethvm)
+	add_subdirectory(lllc)
+endif()
+
+if (TESTS)
+	# test
+	#add_subdirectory(test)
+endif()
 
 if (EVMJIT)
 	if (NOT DEFINED LLVM_DIR)
