@@ -31,7 +31,7 @@
 #include "Exceptions.h"
 #include "Params.h"
 #include "BlockInfo.h"
-#include "BuildInfo.h"
+#include "ConfigInfo.h"
 using namespace std;
 using namespace dev;
 using namespace dev::eth;
@@ -120,7 +120,7 @@ std::string formatBalance(bigint const& _b)
 	}
 	ret << setprecision(5);
 	for (auto const& i: units())
-		if (i.first != 1 && b >= i.first * 1)
+		if (i.first != 1 && b >= i.first)
 		{
 			ret << (double(b / (i.first / 1000)) / 1000.0) << " " << i.second;
 			return ret.str();
