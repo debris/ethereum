@@ -465,28 +465,11 @@ void Client::appendFromBlock(h256 const& _block, BlockPolarity _polarity, h256Ha
 	}
 }
 
-void Client::setForceMining(bool _enable)
-{
-	 m_forceMining = _enable;
-	 if (isMining())
-		startMining();
-}
-
 void Client::setShouldPrecomputeDAG(bool _precompute)
 {
 	bytes trueBytes {1};
 	bytes falseBytes {0};
 	sealEngine()->setOption("precomputeDAG", _precompute ? trueBytes: falseBytes);
-}
-
-void Client::setTurboMining(bool _enable)
-{
-	m_turboMining = _enable;
-#if ETH_ETHASHCL || !ETH_TRUE
-	sealEngine()->setSealer(_enable ? "opencl" : "cpu");
-#endif
-	if (isMining())
-		startMining();
 }
 
 bool Client::isMining() const
@@ -507,12 +490,6 @@ u256 Client::hashrate() const
 	if (Ethash::isWorking(m_sealEngine.get()))
 		r += Ethash::workingProgress(m_sealEngine.get()).rate();
 	return r;
-}
-
-std::list<MineInfo> Client::miningHistory()
-{
-	//TODO: reimplement for CPU/GPU miner
-	return std::list<MineInfo> {};
 }
 
 ExecutionResult Client::call(Address _dest, bytes const& _data, u256 _gas, u256 _value, u256 _gasPrice, Address const& _from)
@@ -712,14 +689,14 @@ void Client::onPostStateChanged()
 
 void Client::startMining()
 {
-	clog(ClientNote) << "MiningBenefactor: " << address();
-	if (address() != Address())
+	clog(ClientNote) << "Mining Beneficiary: " << beneficiary();
+	if (beneficiary())
 	{
 		m_wouldMine = true;
 		rejigMining();
 	}
 	else
-		clog(ClientNote) << "You need to set a MiningBenefactor in order to mine!";
+		clog(ClientNote) << "You need to set a beneficiary in order to mine!";
 }
 
 void Client::rejigMining()
